@@ -35,16 +35,28 @@ def save():
         messagebox.showerror(title="Oops", message="Please don't leave any fields empty!")
 
     else:
-        with open("password_data.json", "w") as data_file:  # "a" stands for append mode
+        try:
+            with open("password_data.json", "w") as data_file:  # "a" stands for append mode
 
-            data = json.load(data_file)
+                data = json.load(data_file)
+                data.update(new_data)
+
+        except FileNotFoundError:
+            with open("password_data.json", "w") as data_file:
+                json.dump(new_data, data_file, indent=4)
+
+        else:
+            # Updating the old data with new data
             data.update(new_data)
 
-        with open("data.json", "w") as data_file:
-            #Saving updated data
-            json.dump(data, data_file, indent=4)
 
-            website_entry.delete(0,END)
+            with open("password_data.json", "w") as data_file:
+                #Saving updated data
+                json.dump(data, data_file, indent=4)
+
+                website_entry.delete(0,END)
+
+        finally:
             email_entry.delete(0,END)
             password_entry.delete(0,END)
 
