@@ -36,9 +36,14 @@ def save():
 
     else:
         with open("password_data.json", "w") as data_file:  # "a" stands for append mode
-            #json.dump(new_data, data_file, indent=4)
+
             data = json.load(data_file)
-            print(data)
+            data.update(new_data)
+
+        with open("data.json", "w") as data_file:
+            #Saving updated data
+            json.dump(data, data_file, indent=4)
+
             website_entry.delete(0,END)
             email_entry.delete(0,END)
             password_entry.delete(0,END)
